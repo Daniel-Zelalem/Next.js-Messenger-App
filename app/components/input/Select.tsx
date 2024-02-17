@@ -2,7 +2,7 @@
 
 import ReactSelect from "react-select";
 
-type SelectProps = {
+interface SelectProps {
   label: string;
   value?: Record<string, any>;
   onChange: (value: Record<string, any>) => void;
