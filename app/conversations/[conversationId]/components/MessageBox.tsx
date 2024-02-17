@@ -106,26 +106,28 @@ const MessageBox: React.FC<MessageBoxProps> = ({ data, isLast }) => {
     "text-sm w-fit overflow-hidden",
     isOwn ? "bg-sky-500 text-white" : "bg-gray-100",
     data.image ? "rounded-md p-0" : "rounded-full py-2 px-3"
-  );
-
-  const handleFileDownload= async () => {
+  ); 
+  const handleFileDownload = async () => {
     if (data.image) {
-      try {
-        const response = await fetch(data.image);
-        const blob = await response.blob();
-
-        const fileName = window.prompt("Save As");
-
-        if (!fileName) {
-          console.log("No filename entered, aborting save.");
-          return;
+      const confirmed = window.confirm("Do you want to download this File?");
+      if (confirmed) {
+        try {
+          const response = await fetch(data.image);
+          const blob = await response.blob();
+  
+          const fileName = window.prompt("Give A Filename To Save The Image as:");
+  
+          if (!fileName) {
+            console.log("No filename entered, aborting save.");
+            return;
+          }
+  
+          const fileBlob = new Blob([blob], { type: blob.type });
+  
+          saveAs(fileBlob, fileName);
+        } catch (error) {
+          console.error("Error downloading image:", error);
         }
-
-        const fileBlob = new Blob([blob], { type: blob.type });
-
-        saveAs(fileBlob, fileName);
-      } catch (error) {
-        console.error("Error downloading image:", error);
       }
     } else {
       console.error("Image URL is null or undefined");
